@@ -17,7 +17,7 @@ import java.util.List;
 
 @SpringBootTest
 @AutoConfigureMockMvc
-public class EmployeeControllerIntegrationTest {
+public class EmployeeControllerIntTests {
     @Autowired
     private MockMvc mockMvc;
     private static List<Employee> employees;

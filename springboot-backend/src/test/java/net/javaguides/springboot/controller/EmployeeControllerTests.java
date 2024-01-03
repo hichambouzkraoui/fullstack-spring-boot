@@ -42,12 +42,10 @@ public class EmployeeControllerTests {
     @MockBean
     private EmployeeService employeeService;
     private static List<EmployeeDto> employees;
-    private static EmployeeDto emp1, emp2;
+    private static EmployeeDto emp1;
     @BeforeEach
     public  void setUp() {
         emp1 = new EmployeeDto(1,"first1","last1", "email1@gmail.com");
-        emp2 = new EmployeeDto(2,"first2","last2", "email2@gmail.com");
-        employees = Arrays.asList(emp1,emp2);
     }
     @Test
     public void EmployeeController_CreateEmployee_ReturnCreated() throws Exception {
