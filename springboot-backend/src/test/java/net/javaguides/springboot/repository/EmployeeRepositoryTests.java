@@ -1,0 +1,54 @@
+package net.javaguides.springboot.repository;
+
+import net.javaguides.springboot.model.Employee;
+import org.junit.jupiter.api.Test;
+import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.boot.jdbc.EmbeddedDatabaseConnection;
+import org.springframework.boot.test.autoconfigure.jdbc.AutoConfigureTestDatabase;
+import org.springframework.boot.test.autoconfigure.orm.jpa.DataJpaTest;
+
+import java.util.Arrays;
+import java.util.List;
+
+import static org.assertj.core.api.Assertions.assertThat;
+
+@DataJpaTest
+@AutoConfigureTestDatabase(connection = EmbeddedDatabaseConnection.H2)
+public class EmployeeRepositoryTests {
+    @Autowired
+    private EmployeeRepository employeeRepository;
+
+    @Test
+    public void EmployeeRepository_Save_ReturnSavedEmployee() {
+        Employee employee = new Employee("first1", "last1", "email1@gmail.com");
+        Employee savedEmployee = employeeRepository.save(employee);
+        assertThat(savedEmployee).isNotNull();
+        assertThat(savedEmployee.getId()).isGreaterThan(0);
+
+    }
+    @Test
+    public void EmployeeRepository_SaveAll_ReturnSavedEmployees() {
+        Employee employee1 = new Employee("first1", "last1", "email1@gmail.com");
+        Employee employee2 = new Employee("first2", "last2", "email2@gmail.com");
+        List<Employee> savedEmployees = employeeRepository.saveAll(Arrays.asList(employee1, employee2));
+        assertThat(savedEmployees).hasSize(2);
+        assertThat(savedEmployees.get(0).getId()).isGreaterThan(0);
+        assertThat(savedEmployees.get(1).getId()).isGreaterThan(0);
+
+    }
+
+    @Test
+    public void EmployeeRepository_GetAll_ReturnAllEmployees() {
+        List<Employee> allEmployees = employeeRepository.findAll();
+        assertThat(allEmployees).hasSize(0);
+        Employee employee1 = new Employee("first1", "last1", "email1@gmail.com");
+        Employee employee2 = new Employee("first2", "last2", "email2@gmail.com");
+        employeeRepository.saveAll(Arrays.asList(employee1, employee2));
+        allEmployees = employeeRepository.findAll();
+        assertThat(allEmployees).hasSize(2);
+        assertThat(allEmployees.get(0).getId()).isGreaterThan(0);
+        assertThat(allEmployees.get(1).getId()).isGreaterThan(0);
+
+
+    }
+}
