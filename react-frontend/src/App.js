@@ -13,7 +13,7 @@ function App() {
   return (
     <div>
         <Router>
-              <HeaderComponent />
+              <HeaderComponent title = "Employee Management App"/>
                 <div className="container">
                     <Switch> 
                           <Route path = "/" exact component = {ListEmployeeComponent}></Route>

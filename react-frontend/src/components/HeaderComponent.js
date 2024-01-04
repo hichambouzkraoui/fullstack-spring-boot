@@ -10,11 +10,12 @@ class HeaderComponent extends Component {
     }
 
     render() {
+        const { title } = this.props
         return (
             <div>
                 <header>
                     <nav className="navbar navbar-expand-md navbar-dark bg-dark">
-                    <div><a href="https://javaguides.net" className="navbar-brand">Employee Management App</a></div>
+                    <div><a href="https://javaguides.net" className="navbar-brand">{ title }</a></div>
                     </nav>
                 </header>
             </div>

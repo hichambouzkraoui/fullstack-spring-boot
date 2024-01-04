@@ -4,7 +4,6 @@ import EmployeeService from '../services/EmployeeService';
 class CreateEmployeeComponent extends Component {
     constructor(props) {
         super(props)
-
         this.state = {
             // step 2
             id: this.props.match.params.id,
