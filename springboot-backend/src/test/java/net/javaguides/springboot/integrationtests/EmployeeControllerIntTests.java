@@ -2,6 +2,7 @@ package net.javaguides.springboot.integrationtests;
 
 import net.javaguides.springboot.model.Employee;
 import org.junit.jupiter.api.BeforeAll;
+import org.junit.jupiter.api.Tag;
 import org.junit.jupiter.api.Test;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.boot.test.autoconfigure.web.servlet.AutoConfigureMockMvc;
@@ -17,6 +18,7 @@ import java.util.List;
 
 @SpringBootTest
 @AutoConfigureMockMvc
+@Tag("IntegrationTests")
 public class EmployeeControllerIntTests {
     @Autowired
     private MockMvc mockMvc;

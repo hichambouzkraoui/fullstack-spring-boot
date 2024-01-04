@@ -14,6 +14,7 @@ import net.javaguides.springboot.model.Employee;
 import net.javaguides.springboot.service.EmployeeService;
 import org.hamcrest.CoreMatchers;
 import org.junit.jupiter.api.BeforeEach;
+import org.junit.jupiter.api.Tag;
 import org.junit.jupiter.api.Test;
 import org.junit.jupiter.api.extension.ExtendWith;
 import org.mockito.ArgumentMatchers;
@@ -33,6 +34,7 @@ import java.util.List;
 @ExtendWith(MockitoExtension.class)
 @WebMvcTest(controllers = EmployeeController.class)
 @AutoConfigureMockMvc(addFilters = false)
+@Tag("UnitTests")
 public class EmployeeControllerTests {
     @Autowired
     private MockMvc mockMvc;

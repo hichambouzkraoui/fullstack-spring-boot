@@ -1,9 +1,11 @@
 pipeline {
     agent any
     stages {
-        stage('Build') {
+        stage('UnitTests') {
             steps {
-                sh 'mvn -B'
+                dir("springboot-backend"){
+                    sh 'mvn test -Dgroups="UnitTests"'
+                }
             }
         }
     }
