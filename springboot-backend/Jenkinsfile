@@ -8,5 +8,12 @@ pipeline {
                 }
             }
         }
+        stage('Package') {
+            steps {
+                dir("springboot-backend"){
+                    sh 'mvn package -DskipTests'
+                }
+            }
+        }
     }
 }
