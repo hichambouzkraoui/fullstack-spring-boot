@@ -13,7 +13,9 @@ pipeline {
         }
         stage('UnitTests') {
             when {
-                not { branch 'main' }
+                not {
+                    when { env.GIT_BRANCH  "origin/main" }
+                }
             }
             steps {
                 dir("springboot-backend"){
