@@ -1,4 +1,5 @@
 pipeline {
+
    environment {
      service = "springboot-backend"
      registry = "621650508462.dkr.ecr.us-east-1.amazonaws.com/springboot-backend"
