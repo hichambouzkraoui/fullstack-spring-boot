@@ -43,6 +43,7 @@ pipeline {
                 return branchName != 'feature_cicd'
                 echo branchName
                 echo env.BRANCH_NAME
+                }
             }
             steps {
                 script {
