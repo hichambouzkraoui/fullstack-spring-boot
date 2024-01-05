@@ -1,4 +1,9 @@
 pipeline {
+  environment {
+    registry = '621650508462.dkr.ecr.us-east-1.amazonaws.com/springboot-backend'
+    registryCredential = 'aws-credentials'
+    dockerImage = ''
+  }
     agent any
     stages {
         stage('UnitTests') {
@@ -12,6 +17,16 @@ pipeline {
             steps {
                 dir("springboot-backend"){
                     sh 'mvn package -DskipTests'
+                }
+            }
+        }
+
+        stage('Building docker image') {
+            steps {
+                dir("springboot-backend"){
+                    script {
+                        dockerImage = docker.build registry + ":$BUILD_NUMBER"
+                    }
                 }
             }
         }
