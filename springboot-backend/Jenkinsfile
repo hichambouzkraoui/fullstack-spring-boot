@@ -52,7 +52,6 @@ pipeline {
                     return env.GIT_BRANCH = "origin/main"
                 }
             }
-            }
             steps {
                 script {
                     docker.withRegistry("https://" + registry, "ecr:us-east-1:" + registryCredential) {
