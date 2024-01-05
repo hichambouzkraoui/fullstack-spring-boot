@@ -31,7 +31,7 @@ pipeline {
                 }
             }
          }
-         stage('Package') {
+         stage('Build and Package') {
              steps {
                  dir(service){
                      sh 'mvn package -DskipTests'
