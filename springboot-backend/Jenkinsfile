@@ -7,6 +7,9 @@ pipeline {
     agent any
     stages {
         stage('UnitTests') {
+            when {
+                not { branch 'main' }
+            }
             steps {
                 dir("springboot-backend"){
                     sh 'mvn test -Dgroups="UnitTests"'
@@ -22,19 +25,26 @@ pipeline {
         }
 
         stage('Building docker image') {
+            when {
+                branch 'main'
+            }
             steps {
                 dir("springboot-backend") {
                     script {
-                        dockerImage = docker.build registry + ":$BUILD_NUMBER"
+                        dockerImage = docker.build registry
                     }
                 }
             }
         }
-        stage('Deploy image') {
+        stage('Deploy image to ECR') {
+            when {
+                branch 'main'
+            }
             steps {
                 script {
                     docker.withRegistry("https://" + registry, "ecr:us-east-1:" + registryCredential) {
-                        dockerImage.push()
+                        dockerImage.push("${env.BUILD_NUMBER}")
+                        dockerImage.push("latest")
                     }
                 }
             }
