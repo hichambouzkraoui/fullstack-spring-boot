@@ -8,9 +8,12 @@ pipeline {
    stages {
          stage('Unit Tests') {
              when {
-                 expression {
+                allOf {
+                    changeset pattern: "springboot-backend/*"
+                    expression {
                      return env.GIT_BRANCH != "origin/main"
-                 }
+                    }
+                }
              }
              steps {
                  dir("springboot-backend"){
@@ -20,8 +23,11 @@ pipeline {
          }
          stage('Integration Tests') {
             when {
-                expression {
-                    return env.GIT_BRANCH == "origin/main"
+                allOf {
+                    changeset pattern: "springboot-backend/*"
+                    expression {
+                     return env.GIT_BRANCH == "origin/main"
+                    }
                 }
             }
             steps {
@@ -31,6 +37,9 @@ pipeline {
             }
          }
          stage('Package') {
+            when {
+                changeset pattern: "springboot-backend/*"
+            }
              steps {
                  dir("springboot-backend"){
                      sh 'mvn package -DskipTests'
@@ -40,9 +49,12 @@ pipeline {
 
          stage('Building docker image') {
              when {
-                 expression {
+                allOf {
+                    changeset pattern: "springboot-backend/*"
+                    expression {
                      return env.GIT_BRANCH == "origin/main"
-                 }
+                    }
+                }
              }
              steps {
                  dir("springboot-backend") {
@@ -54,9 +66,12 @@ pipeline {
          }
          stage('Deploy image to AWS ECR') {
              when {
-                 expression {
+                allOf {
+                    changeset pattern: "springboot-backend/*"
+                    expression {
                      return env.GIT_BRANCH == "origin/main"
-                 }
+                    }
+                }
              }
              steps {
                  script {
