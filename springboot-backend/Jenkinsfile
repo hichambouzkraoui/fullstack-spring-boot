@@ -1,8 +1,8 @@
 pipeline {
    environment {
-     registry = '621650508462.dkr.ecr.us-east-1.amazonaws.com/springboot-backend'
-     registryCredential = 'aws-credentials'
-     dockerImage = ''
+     registry = "621650508462.dkr.ecr.us-east-1.amazonaws.com/springboot-backend"
+     registryCredential = "aws-credentials"
+     dockerImage = ""
    }
    agent any
    stages {
