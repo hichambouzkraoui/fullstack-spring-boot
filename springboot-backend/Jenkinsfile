@@ -38,7 +38,7 @@ pipeline {
              }
          }
 
-         stage('Building docker image') {
+         stage('Building Docker Image') {
              when {
                 expression {
                     return env.GIT_BRANCH == "origin/main"
@@ -52,7 +52,7 @@ pipeline {
                  }
              }
          }
-         stage('Push docker image to AWS ECR') {
+         stage('Push Docker Image to AWS ECR') {
              when {
                 expression {
                     return env.GIT_BRANCH == "origin/main"
