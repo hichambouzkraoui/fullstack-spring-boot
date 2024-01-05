@@ -6,12 +6,7 @@ pipeline {
    }
    agent any
    stages {
-         stage("Env Variables") {
-             steps {
-                     sh "printenv"
-             }
-         }
-         stage('UnitTests') {
+         stage('Unit Tests') {
              when {
                  expression {
                      return env.GIT_BRANCH != "origin/main"
@@ -22,6 +17,18 @@ pipeline {
                      sh 'mvn test -Dgroups="UnitTests"'
                  }
              }
+         }
+         stage('Integration Tests') {
+            when {
+                expression {
+                    return env.GIT_BRANCH == "origin/main"
+                }
+            }
+            steps {
+                dir("springboot-backend"){
+                    sh 'mvn test -Dgroups="IntegrationTests"'
+                }
+            }
          }
          stage('Package') {
              steps {
