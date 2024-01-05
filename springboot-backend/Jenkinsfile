@@ -4,8 +4,8 @@ pipeline {
     registryCredential = 'aws-credentials'
     dockerImage = ''
   }
-    agent any
-    stages {
+  agent any
+  stages {
         stage("Env Variables") {
             steps {
                     sh "printenv"
@@ -61,5 +61,5 @@ pipeline {
                 }
             }
         }
-    }
+  }
 }
