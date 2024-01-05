@@ -52,7 +52,7 @@ pipeline {
                  }
              }
          }
-         stage('Deploy image to AWS ECR') {
+         stage('Push docker image to AWS ECR') {
              when {
                 expression {
                     return env.GIT_BRANCH == "origin/main"
