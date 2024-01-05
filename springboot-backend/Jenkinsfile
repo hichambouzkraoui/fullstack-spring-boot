@@ -34,11 +34,9 @@ pipeline {
         stage('Building docker image') {
             when {
                 expression {
-                branchName = env.CHANGE_TARGET ? env.CHANGE_TARGET : env.BRANCH_NAME
-                return branchName = 'main'
-                echo branchName
-                echo env.BRANCH_NAME
+                    return env.GIT_BRANCH = "origin/main"
                 }
+            }
             }
             steps {
                 dir("springboot-backend") {
@@ -51,11 +49,9 @@ pipeline {
         stage('Deploy image to AWS ECR') {
             when {
                 expression {
-                branchName = env.CHANGE_TARGET ? env.CHANGE_TARGET : env.BRANCH_NAME
-                return branchName = 'main'
-                echo branchName
-                echo env.BRANCH_NAME
+                    return env.GIT_BRANCH = "origin/main"
                 }
+            }
             }
             steps {
                 script {
