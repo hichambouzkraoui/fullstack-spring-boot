@@ -13,8 +13,8 @@ pipeline {
         }
         stage('UnitTests') {
             when {
-                not {
-                    when { env.GIT_BRANCH  "origin/main" }
+                expression {
+                    return env.GIT_BRANCH != "origin/main"
                 }
             }
             steps {
