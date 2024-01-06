@@ -19,7 +19,7 @@ import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RestController;
 
 import net.javaguides.springboot.model.Employee;
-//@CrossOrigin(origins = "*")
+@CrossOrigin
 @RestController
 @RequestMapping("/api/v1/")
 public class EmployeeController {

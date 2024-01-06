@@ -40,10 +40,26 @@ pipeline {
              }
          }
 
+         stage("run DB migration") {
+            when {
+                allOf {
+                     changeset pattern: "*/db/changelog/changes/*"
+                     expression {
+                      return env.GIT_BRANCH == "origin/main"
+                     }
+                }
+         }
          stage('Building Docker Image') {
              when {
                 expression {
                     return env.GIT_BRANCH == "origin/main"
+                }
+                steps {
+                    dir(service) {
+                        script {
+                            sh 'mvn compile package'
+                        }
+                    }
                 }
              }
              steps {
