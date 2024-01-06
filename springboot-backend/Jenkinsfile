@@ -75,6 +75,7 @@ pipeline {
                 expression {
                     return env.GIT_BRANCH == "origin/main"
                 }
+            }
             steps {
                 withAWS(credentials: awsCredential, region: 'us-east-1') {
                     sh 'aws ecs update-service --cluster ${cluster} --service ${service} --force-new-deployment'
