@@ -48,6 +48,7 @@ pipeline {
                       return env.GIT_BRANCH == "origin/main"
                      }
                 }
+            }
          }
          stage('Building Docker Image') {
              when {
