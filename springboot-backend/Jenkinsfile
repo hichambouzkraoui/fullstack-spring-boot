@@ -68,5 +68,18 @@ pipeline {
                  }
              }
          }
+
+         stage('Deploy to ECS') {
+            when {
+                expression {
+                    return env.GIT_BRANCH == "origin/main"
+                }
+            agent {
+                ecs {
+                    inheritFrom 'label-of-my-preconfigured-template'
+                    image registry + ":${env.BUILD_NUMBER}"
+                }
+        }
+         }
    }
  }
