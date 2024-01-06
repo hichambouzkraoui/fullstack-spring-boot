@@ -1,19 +1,21 @@
 pipeline {
    environment {
-     registry = '621650508462.dkr.ecr.us-east-1.amazonaws.com/springboot-backend'
-     registryCredential = 'aws-credentials'
-     dockerImage = ''
+     cluster = "fullstack-spring-boot"
+     service = "springboot-backend"
+     registry = "621650508462.dkr.ecr.us-east-1.amazonaws.com/springboot-backend"
+     awsCredential = "aws-credentials"
+     dockerImage = ""
    }
    agent any
    stages {
          stage('Unit Tests') {
              when {
-                 expression {
-                     return env.GIT_BRANCH != "origin/main"
-                 }
+                expression {
+                    return env.GIT_BRANCH != "origin/main"
+                }
              }
              steps {
-                 dir("springboot-backend"){
+                 dir(service){
                      sh 'mvn test -Dgroups="UnitTests"'
                  }
              }
@@ -21,51 +23,64 @@ pipeline {
          stage('Integration Tests') {
             when {
                 expression {
-                    return env.GIT_BRANCH == "origin/main"
+                     return env.GIT_BRANCH == "origin/main"
                 }
             }
             steps {
-                dir("springboot-backend"){
+                dir(service){
                     sh 'mvn test -Dgroups="IntegrationTests"'
                 }
             }
          }
-         stage('Package') {
+         stage('Build and Package') {
              steps {
-                 dir("springboot-backend"){
+                 dir(service){
                      sh 'mvn package -DskipTests'
                  }
              }
          }
 
-         stage('Building docker image') {
+         stage('Building Docker Image') {
              when {
-                 expression {
-                     return env.GIT_BRANCH == "origin/main"
-                 }
+                expression {
+                    return env.GIT_BRANCH == "origin/main"
+                }
              }
              steps {
-                 dir("springboot-backend") {
+                 dir(service) {
                      script {
                          dockerImage = docker.build registry
                      }
                  }
              }
          }
-         stage('Deploy image to AWS ECR') {
+         stage('Push Docker Image to AWS ECR') {
              when {
-                 expression {
-                     return env.GIT_BRANCH == "origin/main"
-                 }
+                expression {
+                    return env.GIT_BRANCH == "origin/main"
+                }
              }
              steps {
                  script {
-                     docker.withRegistry("https://" + registry, "ecr:us-east-1:" + registryCredential) {
+                     docker.withRegistry("https://" + registry, "ecr:us-east-1:" + awsCredential) {
                          dockerImage.push("${env.BUILD_NUMBER}")
                          dockerImage.push("latest")
                      }
                  }
              }
          }
+
+         stage('Deploy to ECS') {
+            when {
+                expression {
+                    return env.GIT_BRANCH == "origin/main"
+                }
+            }
+            steps {
+                withAWS(credentials: awsCredential, region: 'us-east-1') {
+                    sh 'aws ecs update-service --cluster ${cluster} --service ${service} --force-new-deployment'
+                }
+            }
+        }
    }
  }
