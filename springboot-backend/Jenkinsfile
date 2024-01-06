@@ -1,8 +1,9 @@
 pipeline {
    environment {
+     cluster = "fullstack-spring-boot"
      service = "springboot-backend"
      registry = "621650508462.dkr.ecr.us-east-1.amazonaws.com/springboot-backend"
-     registryCredential = "aws-credentials"
+     awsCredential = "aws-credentials"
      dockerImage = ""
    }
    agent any
@@ -61,7 +62,7 @@ pipeline {
              }
              steps {
                  script {
-                     docker.withRegistry("https://" + registry, "ecr:us-east-1:" + registryCredential) {
+                     docker.withRegistry("https://" + registry, "ecr:us-east-1:" + awsCredential) {
                          dockerImage.push("${env.BUILD_NUMBER}")
                          dockerImage.push("latest")
                      }
@@ -74,13 +75,10 @@ pipeline {
                 expression {
                     return env.GIT_BRANCH == "origin/main"
                 }
-            agent {
-                ecs {
-                    inheritFrom 'springboot-backend'
-                    image registry + ":${env.BUILD_NUMBER}"
+            steps {
+                withAWS(credentials: awsCredential, region: 'us-east-1') {
+                    sh 'aws ecs update-service --cluster ${cluster} --service ${service} --force-new-deployment'
                 }
-            }
         }
-         }
    }
  }
