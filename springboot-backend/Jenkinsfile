@@ -79,6 +79,7 @@ pipeline {
                     inheritFrom 'springboot-backend'
                     image registry + ":${env.BUILD_NUMBER}"
                 }
+            }
         }
          }
    }
