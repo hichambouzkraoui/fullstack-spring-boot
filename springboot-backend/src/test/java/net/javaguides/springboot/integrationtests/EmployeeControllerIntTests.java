@@ -1,13 +1,16 @@
 package net.javaguides.springboot.integrationtests;
 
 import net.javaguides.springboot.model.Employee;
+import net.javaguides.springboot.repository.EmployeeRepository;
 import org.junit.jupiter.api.BeforeAll;
 import org.junit.jupiter.api.Tag;
 import org.junit.jupiter.api.Test;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.boot.test.autoconfigure.web.servlet.AutoConfigureMockMvc;
 import org.springframework.boot.test.context.SpringBootTest;
+import org.springframework.test.context.ActiveProfiles;
 import org.springframework.test.web.servlet.MockMvc;
+import org.testcontainers.junit.jupiter.Testcontainers;
 
 import static org.springframework.test.web.servlet.request.MockMvcRequestBuilders.get;
 import static org.springframework.test.web.servlet.result.MockMvcResultHandlers.print;
@@ -18,18 +21,19 @@ import java.util.List;
 
 @SpringBootTest
 @AutoConfigureMockMvc
+@Testcontainers
+@ActiveProfiles("tc")
 @Tag("IntegrationTests")
 public class EmployeeControllerIntTests {
     @Autowired
     private MockMvc mockMvc;
+    private @Autowired
+    EmployeeRepository employeeRepository;
     private static List<Employee> employees;
-    private static Employee emp0, emp1, emp2;
+    private static Employee emp1;
     @BeforeAll
     public static void setUp() {
-        emp0 = new Employee("first0","last0", "email0@gmail.com");
         emp1 = new Employee("first1","last1", "email1@gmail.com");
-        emp2 = new Employee("first2","last2", "email2@gmail.com");
-        employees = Arrays.asList( emp0,emp1,emp2);
     }
 
     @Test
@@ -41,11 +45,12 @@ public class EmployeeControllerIntTests {
 
     @Test
     public void test_get_employee() throws Exception  {
+        employeeRepository.save(emp1);
         this.mockMvc.perform(get("/api/v1/employees/1"))
                 .andDo(print())
                 .andExpect(status().isOk())
-                .andExpect(jsonPath("$.firstName").value("hicham"))
-                .andExpect(jsonPath("$.lastName").value("bouzkraoui"))
-                .andExpect(jsonPath("$.emailId").value("test@gmail.com"));
+                .andExpect(jsonPath("$.firstName").value("first1"))
+                .andExpect(jsonPath("$.lastName").value("last1"))
+                .andExpect(jsonPath("$.emailId").value("email1@gmail.com"));
     }
 }
