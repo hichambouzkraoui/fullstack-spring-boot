@@ -76,7 +76,7 @@ pipeline {
                 }
             agent {
                 ecs {
-                    inheritFrom 'label-of-my-preconfigured-template'
+                    inheritFrom 'springboot-backend'
                     image registry + ":${env.BUILD_NUMBER}"
                 }
         }
