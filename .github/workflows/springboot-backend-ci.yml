@@ -7,8 +7,8 @@ on:
       - 'feat/**'
       - 'bugfix/**'
       - 'hotfix/**'
-    paths:
-      - 'springboot-backend/**'
+    # paths:
+    #   - 'springboot-backend/**'
 
 jobs:
   unit-test:
@@ -16,6 +16,10 @@ jobs:
     runs-on: ubuntu-latest
     steps:
       - uses: actions/checkout@v4
+        with:
+          sparse-checkout: |
+            .github
+            springboot-backend
       - name: Set up JDK 17
         uses: actions/setup-java@v3
         with:
