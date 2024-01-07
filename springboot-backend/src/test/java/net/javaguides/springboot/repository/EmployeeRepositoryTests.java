@@ -63,4 +63,15 @@ public class EmployeeRepositoryTests {
 
     }
 
+    @Test
+    public  void EmployeeRepository_DeleteAll() {
+        Employee employee1 = new Employee("first1", "last1", "email1@gmail.com");
+        Employee employee2 = new Employee("first2", "last2", "email2@gmail.com");
+        employeeRepository.saveAll(Arrays.asList(employee1, employee2));
+        assertThat(employeeRepository.findAll()).hasSize(2);
+        employeeRepository.deleteAll();
+        assertThat(employeeRepository.findAll()).hasSize(0);
+
+    }
+
 }
