@@ -3,6 +3,7 @@ package net.javaguides.springboot.integrationtests;
 import net.javaguides.springboot.model.Employee;
 import net.javaguides.springboot.repository.EmployeeRepository;
 import org.junit.jupiter.api.BeforeAll;
+import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Tag;
 import org.junit.jupiter.api.Test;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -29,11 +30,9 @@ public class EmployeeControllerIntTests {
     private MockMvc mockMvc;
     private @Autowired
     EmployeeRepository employeeRepository;
-    private static List<Employee> employees;
-    private static Employee emp1;
-    @BeforeAll
-    public static void setUp() {
-        emp1 = new Employee("first1","last1", "email1@gmail.com");
+    @BeforeEach
+    public void cleanUp(){
+        employeeRepository.deleteAll();
     }
 
     @Test
@@ -45,7 +44,7 @@ public class EmployeeControllerIntTests {
 
     @Test
     public void test_get_employee() throws Exception  {
-        employeeRepository.save(emp1);
+        employeeRepository.save(new Employee("first1","last1", "email1@gmail.com"));
         this.mockMvc.perform(get("/api/v1/employees/1"))
                 .andDo(print())
                 .andExpect(status().isOk())
