@@ -53,4 +53,16 @@ public class EmployeeRepositoryTests {
 
 
     }
+
+    @Test
+    public void EmployeeRepository_DeleteById(){
+        assertThat(employeeRepository.findAll()).hasSize(0);
+        Employee employee = employeeRepository.save(new Employee("first1", "last1", "email1@gmail.com"));
+        assertThat(employeeRepository.findAll()).hasSize(1);
+        employeeRepository.deleteById(employee.getId());
+        assertThat(employeeRepository.findAll()).hasSize(0);
+
+
+    }
+
 }
