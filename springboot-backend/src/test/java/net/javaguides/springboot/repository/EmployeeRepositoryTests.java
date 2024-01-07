@@ -1,6 +1,7 @@
 package net.javaguides.springboot.repository;
 
 import net.javaguides.springboot.model.Employee;
+import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Tag;
 import org.junit.jupiter.api.Test;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -19,6 +20,11 @@ import static org.assertj.core.api.Assertions.assertThat;
 public class EmployeeRepositoryTests {
     @Autowired
     private EmployeeRepository employeeRepository;
+
+    @BeforeEach
+    public void cleanUp(){
+        employeeRepository.deleteAll();
+    }
 
     @Test
     public void EmployeeRepository_Save_ReturnSavedEmployee() {
