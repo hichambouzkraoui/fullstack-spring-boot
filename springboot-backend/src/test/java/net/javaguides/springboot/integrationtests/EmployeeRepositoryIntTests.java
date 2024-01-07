@@ -3,6 +3,7 @@ package net.javaguides.springboot.integrationtests;
 import net.javaguides.springboot.model.Employee;
 import net.javaguides.springboot.repository.EmployeeRepository;
 import org.junit.Assert;
+import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Tag;
 import org.junit.jupiter.api.Test;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -35,6 +36,10 @@ public class EmployeeRepositoryIntTests {
 //    }
     @Autowired
     public EmployeeRepository employeeRepository;
+    @BeforeEach
+    public void cleanUp(){
+        employeeRepository.deleteAll();
+    }
 
     @Test
     public void EmployeeRepository_Save_ReturnSavedEmployee() {
