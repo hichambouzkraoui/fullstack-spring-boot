@@ -51,7 +51,7 @@ public class EmployeeServiceTests {
     }
 
     @Test
-    public void get_specificEmployee() {
+    public void EmployeeService_GetEmployee() {
         when(employeeRepository.findById(1L)).thenReturn(Optional.of(emp1));
         EmployeeDto employeeDto = employeeService.getEmployeeById(1L);
         assertThat(employeeDto).isNotNull();
