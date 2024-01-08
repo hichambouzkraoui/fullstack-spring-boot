@@ -7,8 +7,10 @@ on:
       - 'feat/**'
       - 'bugfix/**'
       - 'hotfix/**'
-    # paths:
-    #   - 'springboot-backend/**'
+    paths:
+      - 'springboot-backend/**'
+env:
+  SERVICE_DIR: 'springboot-backend'
 
 jobs:
   unit-test:
@@ -23,5 +25,5 @@ jobs:
           distribution: 'temurin'
           cache: maven
       - name: Build with Maven
-        working-directory: ./springboot-backend
+        working-directory: ${{ env.SERVICE_DIR }}
         run: mvn test -Dgroups="UnitTests"
