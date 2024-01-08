@@ -1,4 +1,4 @@
-name: springboot-backend-ci
+name: springboot-backend-cd
 
 # Controls when the action will run. 
 on:
