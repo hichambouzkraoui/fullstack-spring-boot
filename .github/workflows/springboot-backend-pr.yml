@@ -9,6 +9,8 @@ on:
     
     paths:
       - 'springboot-backend/**'
+env:
+  SERVICE_DIR: 'springboot-backend'
 
 jobs:
   integration-test:
@@ -23,5 +25,5 @@ jobs:
           distribution: 'temurin'
           cache: maven
       - name: Build with Maven
-        working-directory: ./springboot-backend
+        working-directory: ${{ vars.SERVICE_DIR }}
         run: mvn test -Dgroups="IntegrationTests"
