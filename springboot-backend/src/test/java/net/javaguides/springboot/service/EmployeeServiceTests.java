@@ -5,6 +5,7 @@ import net.javaguides.springboot.model.Employee;
 import net.javaguides.springboot.repository.EmployeeRepository;
 import net.javaguides.springboot.service.impl.EmployeeServiceImpl;
 import org.junit.jupiter.api.BeforeAll;
+import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Tag;
 import org.junit.jupiter.api.Test;
 import org.junit.jupiter.api.extension.ExtendWith;
@@ -37,6 +38,10 @@ public class EmployeeServiceTests {
         emp1 = new Employee("first1","last1", "email1@gmail.com");
         emp2 = new Employee("first2","last2", "email2@gmail.com");
         employees = Arrays.asList( emp0,emp1,emp2);
+    }
+    @BeforeEach
+    public void cleanUp(){
+        employeeRepository.deleteAll();
     }
     @Test
     public void getAllEmployees_returnsAllEmployees() {

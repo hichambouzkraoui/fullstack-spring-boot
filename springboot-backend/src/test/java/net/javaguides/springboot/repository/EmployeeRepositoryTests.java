@@ -1,6 +1,7 @@
 package net.javaguides.springboot.repository;
 
 import net.javaguides.springboot.model.Employee;
+import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Tag;
 import org.junit.jupiter.api.Test;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -19,6 +20,11 @@ import static org.assertj.core.api.Assertions.assertThat;
 public class EmployeeRepositoryTests {
     @Autowired
     private EmployeeRepository employeeRepository;
+
+    @BeforeEach
+    public void cleanUp(){
+        employeeRepository.deleteAll();
+    }
 
     @Test
     public void EmployeeRepository_Save_ReturnSavedEmployee() {
@@ -55,13 +61,20 @@ public class EmployeeRepositoryTests {
     }
 
     @Test
+    public  void EmployeeRepository_DeleteAll() {
+        Employee employee1 = new Employee("first1", "last1", "email1@gmail.com");
+        Employee employee2 = new Employee("first2", "last2", "email2@gmail.com");
+        employeeRepository.saveAll(Arrays.asList(employee1, employee2));
+        assertThat(employeeRepository.findAll()).hasSize(2);
+        employeeRepository.deleteAll();
+        assertThat(employeeRepository.findAll()).hasSize(0);
+    }
     public void EmployeeRepository_DeleteById(){
         assertThat(employeeRepository.findAll()).hasSize(0);
         Employee employee = employeeRepository.save(new Employee("first1", "last1", "email1@gmail.com"));
         assertThat(employeeRepository.findAll()).hasSize(1);
         employeeRepository.deleteById(employee.getId());
         assertThat(employeeRepository.findAll()).hasSize(0);
-
 
     }
 

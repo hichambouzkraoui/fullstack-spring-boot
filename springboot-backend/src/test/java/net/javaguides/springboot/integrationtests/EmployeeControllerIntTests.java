@@ -2,7 +2,6 @@ package net.javaguides.springboot.integrationtests;
 
 import net.javaguides.springboot.model.Employee;
 import net.javaguides.springboot.repository.EmployeeRepository;
-import org.junit.jupiter.api.BeforeAll;
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Tag;
 import org.junit.jupiter.api.Test;
@@ -16,9 +15,6 @@ import org.testcontainers.junit.jupiter.Testcontainers;
 import static org.springframework.test.web.servlet.request.MockMvcRequestBuilders.get;
 import static org.springframework.test.web.servlet.result.MockMvcResultHandlers.print;
 import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.*;
-
-import java.util.Arrays;
-import java.util.List;
 
 @SpringBootTest
 @AutoConfigureMockMvc
@@ -44,8 +40,8 @@ public class EmployeeControllerIntTests {
 
     @Test
     public void test_get_employee() throws Exception  {
-        employeeRepository.save(new Employee("first1","last1", "email1@gmail.com"));
-        this.mockMvc.perform(get("/api/v1/employees/1"))
+        Employee employee = employeeRepository.save(new Employee("first1","last1", "email1@gmail.com"));
+        this.mockMvc.perform(get("/api/v1/employees/"+employee.getId()))
                 .andDo(print())
                 .andExpect(status().isOk())
                 .andExpect(jsonPath("$.firstName").value("first1"))
