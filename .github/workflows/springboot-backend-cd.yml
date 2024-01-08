@@ -42,6 +42,7 @@ jobs:
         uses: aws-actions/amazon-ecr-login@v1
 
       - name: Build, tag, push to AWS ECR
+        working-directory: ${{ env.SERVICE_DIR }}
         id: build
         env:
           REPOSITORY_URL: ${{ steps.login-ecr.outputs.registry }}/${{ env.SERVICE_NAME }}
