@@ -41,10 +41,13 @@ jobs:
         id: login-ecr
         uses: aws-actions/amazon-ecr-login@v1
 
-      - name: Build and redeploy
-        uses: jaroldwong/ecr-push-and-ecs-deploy@v1.1
-        with:
-          ecr-registry: ${{ steps.login-ecr.outputs.registry }}
-          ecr-repository: ${{ env.SERVICE_NAME }}
-          ecs-cluster: ${{ env.CLUSTER_NAME }}
-          ecs-service: ${{ env.SERVICE_NAME }}
+      - name: Build, tag, push to AWS ECR
+        id: build
+        env:
+          REPOSITORY_URL: ${{ steps.login-ecr.outputs.registry }}/${{ env.SERVICE_NAME }}
+        run: |
+          docker build -t ${{ env.REPOSITORY_URL }} .
+          docker push ${{ env.REPOSITORY_URL }}
+      - name : Force new AWS ECS deployment
+        run: |
+          aws ecs update-service --cluster ${{ env.CLUSTER_NAME }} --service ${{ env.SERVICE_NAME }} --force-new-deployment
