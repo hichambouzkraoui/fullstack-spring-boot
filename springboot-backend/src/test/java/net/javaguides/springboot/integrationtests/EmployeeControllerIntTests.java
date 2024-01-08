@@ -40,8 +40,8 @@ public class EmployeeControllerIntTests {
 
     @Test
     public void test_get_employee() throws Exception  {
-        employeeRepository.save(new Employee("first1","last1", "email1@gmail.com"));
-        this.mockMvc.perform(get("/api/v1/employees/1"))
+        Employee employee = employeeRepository.save(new Employee("first1","last1", "email1@gmail.com"));
+        this.mockMvc.perform(get("/api/v1/employees/"+employee.getId()))
                 .andDo(print())
                 .andExpect(status().isOk())
                 .andExpect(jsonPath("$.firstName").value("first1"))
