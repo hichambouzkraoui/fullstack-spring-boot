@@ -7,8 +7,8 @@ on:
       - 'feat/**'
       - 'bugfix/**'
       - 'hotfix/**'
-    # paths:
-    #   - 'springboot-backend/**'
+    paths:
+      - 'springboot-backend/**'
 env:
   SERVICE_DIR: 'springboot-backend'
 
