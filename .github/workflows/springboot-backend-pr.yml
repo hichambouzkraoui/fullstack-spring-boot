@@ -25,5 +25,5 @@ jobs:
           distribution: 'temurin'
           cache: maven
       - name: Build with Maven
-        working-directory: ${{ vars.SERVICE_DIR }}
+        working-directory: ${{ env.SERVICE_DIR }}
         run: mvn test -Dgroups="IntegrationTests"
